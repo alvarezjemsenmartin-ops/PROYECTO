@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+ 
+<head>
+  <meta charset="UTF-8">
+ 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+ 
+  <title>Inicio - CamisApp</title>
+ 
+  <style>
+    *{
+    box-sizing:border-box;
+}
+
+/*==========================
+        FONDO GALAXIA
+==========================*/
+
+body{
+    margin:0;
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    color:#eefcff;
+    background:
+        radial-gradient(circle at top,#2b4c7e 0%,#182848 35%,#0b1126 70%,#040814 100%);
+    min-height:100vh;
+}
+
+/*==========================
+          HEADER
+==========================*/
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:22px 40px;
+    background:rgba(10,20,45,.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(0,255,255,.2);
+    box-shadow:0 0 20px rgba(0,200,255,.2);
+}
+
+header h1{
+    margin:0;
+    color:#7df9ff;
+    letter-spacing:2px;
+    text-shadow:0 0 10px cyan;
+}
+
+.usuario-header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.usuario-header span{
+    color:white;
+    font-weight:bold;
+}
+
+/*==========================
+        BOTÓN SALIR
+==========================*/
+
+.btn-logout{
+    padding:12px 22px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    background:linear-gradient(135deg,#ff5f6d,#c9184a);
+    transition:.35s;
+}
+
+.btn-logout:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 18px rgba(255,90,120,.5);
+}
+
+/*==========================
+            NAV
+==========================*/
+
+nav{
+    display:flex;
+    justify-content:center;
+    padding:18px;
+    background:rgba(18,28,54,.75);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(0,255,255,.12);
+}
+
+nav ul{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:18px;
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+nav a{
+    padding:12px 22px;
+    text-decoration:none;
+    color:#d9faff;
+    border-radius:12px;
+    transition:.3s;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:white;
+    background:linear-gradient(135deg,#00d4ff,#0077ff);
+    box-shadow:0 0 18px rgba(0,255,255,.4);
+}
+
+/*==========================
+            MAIN
+==========================*/
+
+main{
+    max-width:1150px;
+    margin:45px auto;
+    padding:0 20px;
+}
+
+/*==========================
+           PANEL
+==========================*/
+
+.panel{
+    padding:35px;
+    margin-bottom:35px;
+    border-radius:22px;
+    background:rgba(18,28,54,.82);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,255,255,.18);
+    box-shadow:
+        0 0 30px rgba(0,180,255,.15),
+        0 0 70px rgba(140,90,255,.12);
+}
+
+/*==========================
+        BIENVENIDA
+==========================*/
+
+.bienvenida{
+    text-align:center;
+}
+
+.bienvenida h2{
+    color:#7df9ff;
+    margin-top:0;
+    letter-spacing:3px;
+    text-shadow:0 0 10px cyan;
+}
+
+/*==========================
+      DATOS USUARIO
+==========================*/
+
+.datos-usuario{
+    max-width:650px;
+    margin:30px auto 0;
+    border-radius:18px;
+    overflow:hidden;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.dato{
+    display:grid;
+    grid-template-columns:170px 1fr;
+    padding:16px 20px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.dato:last-child{
+    border-bottom:none;
+}
+
+.dato strong{
+    color:#7df9ff;
+}
+
+/*==========================
+          TARJETAS
+==========================*/
+
+.opciones{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.tarjeta{
+    text-align:center;
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(0,255,255,.15);
+    transition:.35s;
+}
+
+.tarjeta:hover{
+    transform:translateY(-8px);
+    box-shadow:
+        0 0 25px rgba(0,255,255,.25),
+        0 0 45px rgba(140,90,255,.18);
+}
+
+.tarjeta h3{
+    color:#7df9ff;
+    margin-top:0;
+}
+
+.tarjeta p{
+    color:#d8f7ff;
+    line-height:1.6;
+}
+
+.tarjeta a{
+    display:inline-block;
+    margin-top:10px;
+    padding:12px 24px;
+    color:white;
+    text-decoration:none;
+    border-radius:12px;
+    font-weight:bold;
+    background:linear-gradient(135deg,#00d4ff,#0066ff);
+    transition:.3s;
+}
+
+.tarjeta a:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 18px rgba(0,255,255,.45);
+}
+
+/*==========================
+         MENSAJES
+==========================*/
+
+#mensaje{
+    margin-top:20px;
+    min-height:25px;
+    text-align:center;
+    color:#ff92b2;
+    font-weight:bold;
+    text-shadow:0 0 10px #ff4d6d;
+}
+
+.cargando{
+    text-align:center;
+    color:#b8ecff;
+}
+
+/*==========================
+          FOOTER
+==========================*/
+
+footer{
+    margin-top:50px;
+    padding:25px;
+    text-align:center;
+    background:rgba(10,20,45,.9);
+    border-top:1px solid rgba(0,255,255,.18);
+    color:#bceeff;
+}
+
+/*==========================
+        RESPONSIVE
+==========================*/
+
+@media(max-width:700px){
+
+    header{
+        flex-direction:column;
+        gap:20px;
+        text-align:center;
+    }
+
+    nav ul{
+        flex-direction:column;
+        width:100%;
+    }
+
+    nav a{
+        display:block;
+        width:100%;
+        text-align:center;
+    }
+
+    .opciones{
+        grid-template-columns:1fr;
+    }
+
+    .dato{
+        grid-template-columns:1fr;
+        gap:8px;
+        text-align:center;
+    }
+}
+  </style>
+</head>
+ 
+<body>
+ 
+  <header>
+ 
+    <h1>CamisApp</h1>
+ 
+    <div class="usuario-header">
+ 
+      <span id="nombre-header">
+        Cargando usuario...
+      </span>
+ 
+      <button
+        type="button"
+        id="btn-logout"
+        class="btn-logout">
+ 
+        Cerrar sesión
+ 
+      </button>
+ 
+    </div>
+ 
+  </header>
+ 
+  <nav>
+ 
+    <ul>
+      <li>
+        <a href="index.html">
+          Inicio
+        </a>
+      </li>
+ 
+      <li>
+        <a href="Gema.html">
+          Administrar camisetas
+        </a>
+      </li>
+ 
+      <li>
+        <a href="carrusel.html">
+          Carrusel y votaciones
+        </a>
+      </li>
+ 
+      <li>
+        <a href="#" id="enlace-logout">
+          Cerrar sesión
+        </a>
+      </li>
+    </ul>
+ 
+  </nav>
+ 
+  <main>
+ 
+    <section class="panel bienvenida">
+ 
+      <h2 id="titulo-bienvenida">
+        Bienvenido 6 - 7
+      </h2>
+ 
+      <p>
+        Desde este menú puede diseñar, consultar, modificar,
+        eliminar y calificar camisetas.
+      </p>
+ 
+      <div id="cargando" class="cargando">
+        Cargando información del usuario...
+      </div>
+ 
+      <div id="datos-usuario" class="datos-usuario" hidden>
+ 
+        <div class="dato">
+          <strong>Identificador:</strong>
+          <span id="usuario-id"></span>
+        </div>
+ 
+        <div class="dato">
+          <strong>Nombre:</strong>
+          <span id="usuario-nombre"></span>
+        </div>
+ 
+        <div class="dato">
+          <strong>Correo electrónico:</strong>
+          <span id="usuario-email"></span>
+        </div>
+ 
+        <div class="dato">
+          <strong>Fecha de registro:</strong>
+          <span id="usuario-fecha"></span>
+        </div>
+ 
+      </div>
+ 
+      <div id="mensaje"></div>
+ 
+    </section>
+ 
+    <section class="panel">
+ 
+      <h2>Menú principal</h2>
+ 
+      <div class="opciones">
+ 
+        <article class="tarjeta">
+ 
+          <h3>CRUD de Gemas</h3>
+ 
+          <p>
+            Cree nuevos diseños, consulte sus gemas,
+            edite colores o elimine diseños guardados.
+          </p>
+ 
+          <a href="Gema.html">
+            Administrar gemas
+          </a>
+ 
+        </article>
+ 
+        <article class="tarjeta">
+ 
+          <h3>Carrusel de gemas</h3>
+ 
+          <p>
+            Observe los diseños guardados y vote a favor
+            o en contra de cada gema.
+          </p>
+ 
+          <a href="carrusel.html">
+            Ver carrusel
+          </a>
+ 
+        </article>
+ 
+      </div>
+ 
+    </section>
+ 
+  </main>
+ 
+  <footer>
+    CamisApp - Diseñador de camisetas
+  </footer>
+ 
+  <script>
+    const nombreHeader =
+      document.getElementById('nombre-header');
+ 
+    const tituloBienvenida =
+      document.getElementById('titulo-bienvenida');
+ 
+    const contenedorDatos =
+      document.getElementById('datos-usuario');
+ 
+    const elementoCargando =
+      document.getElementById('cargando');
+ 
+    const mensaje =
+      document.getElementById('mensaje');
+ 
+    const btnLogout =
+      document.getElementById('btn-logout');
+ 
+    const enlaceLogout =
+      document.getElementById('enlace-logout');
+ 
+ 
+    document.addEventListener(
+      'DOMContentLoaded',
+      iniciarPagina
+    );
+ 
+ 
+    async function iniciarPagina() {
+      const sesionValida = await verificarSesion();
+ 
+      if (!sesionValida) {
+        return;
+      }
+ 
+      configurarEventos();
+ 
+      await cargarUsuarioLogueado();
+    }
+ 
+ 
+    function configurarEventos() {
+      btnLogout.addEventListener('click', cerrarSesion);
+ 
+      enlaceLogout.addEventListener('click', function (evento) {
+        evento.preventDefault();
+        cerrarSesion();
+      });
+    }
+ 
+ 
+    function obtenerToken() {
+      return localStorage.getItem('token');
+    }
+ 
+ 
+    function obtenerHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + obtenerToken()
+      };
+    }
+ 
+ 
+    async function verificarSesion() {
+      const token = obtenerToken();
+ 
+      if (!token) {
+        regresarAlLogin();
+        return false;
+      }
+ 
+      try {
+        const respuesta = await fetch('/api/verificatoken', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+ 
+        if (!respuesta.ok) {
+          regresarAlLogin();
+          return false;
+        }
+ 
+        return true;
+ 
+      } catch (error) {
+        console.error(
+          'Error verificando la sesión:',
+          error
+        );
+ 
+        regresarAlLogin();
+ 
+        return false;
+      }
+    }
+ 
+ 
+    async function cargarUsuarioLogueado() {
+      try {
+        const respuesta = await fetch(
+          '/api/usuario-logueado',
+          {
+            method: 'GET',
+            headers: obtenerHeaders()
+          }
+        );
+ 
+        const usuario =
+          await procesarRespuesta(respuesta);
+ 
+        mostrarDatosUsuario(usuario);
+ 
+      } catch (error) {
+        console.error(error);
+ 
+        elementoCargando.hidden = true;
+ 
+        mostrarMensaje(error.message);
+      }
+    }
+ 
+ 
+    async function procesarRespuesta(respuesta) {
+      if (
+        respuesta.status === 401 ||
+        respuesta.status === 403
+      ) {
+        regresarAlLogin();
+ 
+        throw new Error(
+          'La sesión ha expirado'
+        );
+      }
+ 
+      let datos = {};
+ 
+      try {
+        datos = await respuesta.json();
+ 
+      } catch (error) {
+        datos = {};
+      }
+ 
+      if (!respuesta.ok) {
+        throw new Error(
+          datos.error ||
+          'No fue posible completar la operación'
+        );
+      }
+ 
+      return datos;
+    }
+ 
+ 
+    function mostrarDatosUsuario(usuario) {
+      elementoCargando.hidden = true;
+      contenedorDatos.hidden = false;
+ 
+      const nombre =
+        usuario.nombre || 'Usuario';
+ 
+      nombreHeader.textContent = nombre;
+ 
+      tituloBienvenida.textContent =
+        'Bienvenido, ' + nombre;
+ 
+      document.getElementById(
+        'usuario-id'
+      ).textContent = usuario._id || 'No disponible';
+ 
+      document.getElementById(
+        'usuario-nombre'
+      ).textContent = nombre;
+ 
+      document.getElementById(
+        'usuario-email'
+      ).textContent = usuario.email || 'No disponible';
+ 
+      document.getElementById(
+        'usuario-fecha'
+      ).textContent = formatearFecha(
+        usuario.fechaRegistro
+      );
+    }
+ 
+ 
+    function formatearFecha(fecha) {
+      if (!fecha) {
+        return 'No disponible';
+      }
+ 
+      const fechaConvertida = new Date(fecha);
+ 
+      if (Number.isNaN(fechaConvertida.getTime())) {
+        return 'No disponible';
+      }
+ 
+      return fechaConvertida.toLocaleString('es-CR');
+    }
+ 
+ 
+    function cerrarSesion() {
+      localStorage.removeItem('token');
+ 
+      window.location.replace('login.html');
+    }
+ 
+ 
+    function regresarAlLogin() {
+      localStorage.removeItem('token');
+ 
+      window.location.replace('login.html');
+    }
+ 
+ 
+    function mostrarMensaje(texto) {
+      mensaje.textContent = texto;
+    }
+  </script>
+ 
+</body>
+ 
+</html>

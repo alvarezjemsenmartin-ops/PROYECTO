@@ -1,0 +1,740 @@
+<html>
+<head></head>
+<body>
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Almacen de gemas</title>
+
+  <style>
+    body{
+        margin:0;
+    padding:30px;
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:
+        radial-gradient(circle at top,#304878 0%,#16213e 35%,#0b1026 70%,#040814 100%);
+    min-height:100vh;
+}
+
+
+
+
+.contenedor-principal{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:35px;
+}
+
+
+
+.panel{
+    background:rgba(18,28,54,.82);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(120,220,255,.25);
+    border-radius:22px;
+    padding:35px;
+    box-shadow:
+        0 0 30px rgba(0,180,255,.18),
+        0 0 70px rgba(130,70,255,.12);
+}
+
+
+
+h1,h2{
+    color:#8de9ff;
+    text-align:center;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:30px;
+    text-shadow:
+        0 0 8px cyan,
+        0 0 20px #66ccff;
+}
+
+
+
+.controles{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+}
+
+label{
+    color:#dffbff;
+    font-weight:bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[list],
+input[type="file"]{
+    width:230px;
+    padding:12px 15px;
+    border-radius:12px;
+    border:1px solid rgba(0,255,255,.3);
+    background:rgba(255,255,255,.08);
+    color:white;
+    transition:.35s;
+}
+
+input::placeholder{
+    color:#bdd6e8;
+}
+
+input:focus{
+    outline:none;
+    border-color:#7df9ff;
+    box-shadow:0 0 15px rgba(0,255,255,.6);
+}
+
+
+
+button{
+    padding:12px 22px;
+    border:none;
+    border-radius:12px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.35s;
+}
+
+button:hover{
+    transform:translateY(-4px);
+    box-shadow:0 0 18px rgba(0,255,255,.45);
+}
+
+#btn-guardar{
+    background:linear-gradient(135deg,#00d4ff,#0066ff);
+}
+
+#btn-limpiar{
+    background:linear-gradient(135deg,#ffca3a,#ff9f1c);
+}
+
+#btn-cancelar{
+    background:linear-gradient(135deg,#6c63ff,#3f37c9);
+}
+
+.btn-editar{
+    background:linear-gradient(135deg,#00b4d8,#0077b6);
+}
+
+.btn-eliminar{
+    background:linear-gradient(135deg,#ff4d6d,#d90429);
+}
+
+
+
+.gema-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+
+
+.tabla-contenedor{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:15px;
+}
+
+th{
+    background:linear-gradient(90deg,#00b4ff,#4b5dff);
+    color:white;
+    padding:15px;
+}
+
+td{
+    background:rgba(255,255,255,.05);
+    color:#eefcff;
+    padding:15px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+tr:hover td{
+    background:rgba(0,255,255,.08);
+}
+
+.muestra-color{
+    width:35px;
+    height:35px;
+    display:inline-block;
+    border-radius:50%;
+    border:2px solid white;
+    box-shadow:0 0 12px cyan;
+}
+
+
+
+.acciones{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+
+
+#mensaje{
+    text-align:center;
+    margin-top:20px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.mensaje-correcto{
+    color:#76ffb5;
+    text-shadow:0 0 10px #76ffb5;
+}
+
+.mensaje-error{
+    color:#ff7b9c;
+    text-shadow:0 0 10px #ff7b9c;
+}
+
+#sin-camisetas{
+    text-align:center;
+    color:#d4f5ff;
+    padding:20px;
+}
+
+
+
+.oculto{
+    display:none;
+}
+
+.o{
+    width:230px;
+    padding:12px 15px;
+    border-radius:12px;
+    border:1px solid rgba(0,255,255,.3);
+    background:rgba(255,255,255,.08);
+    color:white;
+    transition:.35s;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:35px;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <main class="contenedor-principal">
+
+    <section class="panel">
+
+      <h1>Guarda tu gema</h1>
+
+      <p id="modo-edicion" class="oculto">
+        Está editando una gema guardada.
+      </p>
+
+      <div class="gema-container">
+
+        <input type="file" id="file-input" accept="image/*">
+
+      </div>
+
+      <div class="controles">
+
+        <label for="Nombre">Nombre de gema:</label>
+
+        <input
+          type="text"
+          id="Nombre"
+          class="inf"
+          placeholder="Ingrese nombre"
+        >
+        <label for="Tipo">Tipo de gema:</label>
+
+        <input
+          type="text"
+          id="Tipo"
+          class="inf"
+          placeholder="Ingrese tipo"
+        >
+
+        <label for="Color">Color de gema:</label>
+
+        <input
+          type="color"
+          id="Color"
+          class="inf"
+          placeholder="Ingrese color"
+        >
+
+        <label for="dureza">Dureza de gema:</label>
+
+        <input list="dureza-lista" name="dureza" id="dureza" placeholder="Elige dureza" class="inf">
+            <datalist id="dureza-lista">
+                <option value="1">
+                <option value="2">
+                <option value="3">
+                <option value="4">
+                <option value="5">
+                <option value="6">
+                <option value="7">
+                <option value="8">
+                <option value="9">
+                <option value="10">
+            </datalist>
+        
+        
+
+        <label for="procedencia">Procedencia de gema:</label>
+
+        <input
+          type="text"
+          id="procedencia"
+          placeholder="Ingrese procedencia"
+          class="inf"
+        >
+
+        <label for="composicion">Composición de gema:</label>
+
+        <input
+          type="text"
+          id="composicion"
+          class="inf"
+          placeholder="Ingrese composición"
+        >
+
+        <label for="brillo">Brillo de gema:</label>
+        <input
+          type="text"
+          id="brillo"
+          class="inf"
+          placeholder="Ingrese brillo"
+        >
+
+        <label for="rareza">Rareza de gema:</label>
+
+        <input
+          type="text"
+          id="rareza"
+          class="inf"
+          placeholder="Ingrese rareza"
+        >
+
+        <label for="valor-estimado">Valor estimado de gema:</label>
+
+        <input
+          type="number"
+          id="valor-estimado"
+          class="inf"
+          placeholder="Ingrese valor estimado"
+        >
+
+        <button type="button" id="btn-guardar">
+          Guardar diseño
+        </button>
+
+        <button type="button" id="btn-limpiar">
+          Reiniciar colores
+        </button>
+
+        <button type="button" id="btn-cancelar" class="oculto">
+          Cancelar edición
+        </button>
+
+      </div>
+
+      <div id="mensaje"></div>
+
+      <div>
+        <h2>Buscar Gema</h2>
+        <input type="text" id="buscar-nombre" placeholder="Buscar por nombre...">
+        <select id="filtrar-tipo" class="o">
+            <option value="">Todos los tipos</option>
+            <option value="Preciosa">Preciosa</option>
+            <option value="Semipreciosa">Semipreciosa</option>
+        </select>
+        <select id="ordenar-dureza" class="o">
+        <option value="">Sin orden</option>
+        <option value="asc">Dureza: menor a mayor</option>
+        <option value="desc">Dureza: mayor a menor</option>
+        </select>
+      </div>
+
+    </section>
+
+    <section class="panel">
+
+      <h2>Mis gemas guardadas</h2>
+
+      <div class="tabla-contenedor">
+
+        <table id="tabla-gemas">
+
+          <thead>
+            <tr>
+              <th>Imagen Url</th>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Color</th>
+              <th>Dureza</th>
+              <th>Procedencia</th>
+              <th>Composición</th>
+              <th>Brillo</th>
+              <th>Rareza</th>
+              <th>Valor estimado</th>
+            </tr>
+          </thead>
+
+          <tbody id="lista-gemas"></tbody>
+
+        </table>
+
+        <p id="sin-gemas" class="oculto">
+          No tiene camisetas guardadas.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    // Hola profe, admitiré que en algunas cosas le pedí ayuda a la IA
+    // Pero para que vea que yo sí entiendo todo esto y sé por qué y como funciona
+    // Le pondré comentarios describiendo cada función que hice con ayuda de IA
+    const API_GEMAS = '/api/gemas';
+    const inputNombre = document.getElementById('Nombre');
+    const inputTipo = document.getElementById('Tipo');
+    const inputColor = document.getElementById('Color');
+    const inputDureza = document.getElementById('dureza');
+    const inputProcedencia = document.getElementById('procedencia');
+    const inputComposicion = document.getElementById('composicion');
+    const inputBrillo = document.getElementById('brillo');
+    const inputRareza = document.getElementById('rareza');
+    const inputValor = document.getElementById('valor-estimado');
+    const inputImagen = document.getElementById('file-input');
+    const btnGuardar = document.getElementById('btn-guardar');
+    const btnLimpiar = document.getElementById('btn-limpiar');
+    const btnCancelar = document.getElementById('btn-cancelar');
+    const listaGemas = document.getElementById('lista-gemas');   
+    const tablaGemas = document.getElementById('tabla-gemas');   
+    const sinGemas = document.getElementById('sin-gemas');       
+    const mensaje = document.getElementById('mensaje');
+    const modoEdicion = document.getElementById('modo-edicion');
+    const inputBuscar = document.getElementById('buscar-nombre');
+    const selectTipo = document.getElementById('filtrar-tipo');
+    const selectOrdenDureza = document.getElementById('ordenar-dureza');
+    let gemaEditandoId = null;
+    let imagenBase64 = null;
+    document.addEventListener('DOMContentLoaded', iniciarPagina);
+    // Punto de entrada principal. Verifica que el usuario tenga sesión activa antes
+    // de mostrar nada, luego configura los botones y carga las gemas de la base de datos.
+    async function iniciarPagina() {
+      const sesionValida = await verificarSesion();
+      if (!sesionValida) return; // Si no hay sesión, se redirige al login y se detiene
+      configurarEventos();
+      await cargarGemas();
+    }
+    // Lee el token de autenticación guardado en el navegador.
+    // Se usa localStorage para que el token persista aunque el usuario recargue la página.
+    function obtenerToken() { return localStorage.getItem('token'); }
+    // Construye los encabezados que se envían en cada petición a la API.
+    // Content-Type indica que el body va en formato JSON.
+    // Authorization envía el token para que el servidor sepa quién hace la petición.
+    function obtenerHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + obtenerToken()
+      };
+    }
+
+    async function verificarSesion() {
+      const token = obtenerToken();
+      if (!token) { regresarAlLogin(); return false; }
+      try {
+        const respuesta = await fetch('/api/verificatoken', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!respuesta.ok) { regresarAlLogin(); return false; }
+        return true;
+      } catch (error) {
+        regresarAlLogin();
+        return false;
+      }
+    }
+
+    function regresarAlLogin() {
+      localStorage.removeItem('token');
+      window.location.replace('login.html');
+    }
+
+    async function procesarRespuesta(respuesta) {
+      if (respuesta.status === 401 || respuesta.status === 403) {
+        regresarAlLogin();
+        throw new Error('La sesión expiró');
+      }
+      const datos = await respuesta.json();
+      if (!respuesta.ok) throw new Error(datos.error || 'Error en la operación');
+      return datos;
+    }
+    // Convierte un archivo de imagen a base64 usando FileReader.
+    // Devuelve una promesa porque la lectura del archivo es asíncrona.
+    // El resultado es una cadena del tipo "data:image/jpeg;base64,..." que se puede
+    // usar directamente como src de una etiqueta <img> o guardar en la base de datos.
+    function leerImagenComoBase64(archivo) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result); // data:image/...;base64,...
+        reader.onerror = () => reject(new Error('No se pudo leer la imagen'));
+        reader.readAsDataURL(archivo);
+      });
+    }
+    // Asigna las funciones correspondientes a cada botón del formulario.
+    // También escucha cuando el usuario selecciona una imagen para convertirla
+    // a base64 en ese momento y tenerla lista cuando se pulse Guardar.
+    function configurarEventos() {
+      btnGuardar.addEventListener('click', guardarGema);
+      btnLimpiar.addEventListener('click', () => reiniciarFormulario(true));
+      btnCancelar.addEventListener('click', () => reiniciarFormulario(true));
+      // Cada vez que el usuario elige un archivo, se convierte a base64 de inmediato
+      // y se guarda en imagenBase64. Si cancela la selección, se limpia la variable.
+      inputImagen.addEventListener('change', async () => {
+        const archivo = inputImagen.files[0];
+        if (archivo) {
+          try {
+            imagenBase64 = await leerImagenComoBase64(archivo);
+          } catch (e) {
+            mostrarMensaje('No se pudo leer la imagen', true);
+            imagenBase64 = null;
+            let todasLasGemas = [];
+            inputBuscar.addEventListener('input', filtrarYMostrar);
+            selectTipo.addEventListener('change', filtrarYMostrar);
+            selectOrdenDureza.addEventListener('change', filtrarYMostrar);
+          }
+        } else {
+          imagenBase64 = null;
+        }
+      });
+    }
+    // Recoge los valores actuales de todos los campos del formulario
+    // y los devuelve como un objeto con los mismos nombres de campo
+    // que espera la base de datos.
+    function obtenerDiseñoActual() {
+      return {
+        Imginf: imagenBase64 || null,  // imagen en base64 o null si no se seleccionó ninguna
+        Nombreinf: inputNombre.value,
+        Tipoinf: inputTipo.value,
+        Colorinf: inputColor.value,
+        durezainf: inputDureza.value,
+        procedenciainf: inputProcedencia.value,
+        composicioninf: inputComposicion.value,
+        brilloinf: inputBrillo.value,
+        rarezainf: inputRareza.value,
+        valorEstimadoinf: inputValor.value
+      };
+    }
+    // Guarda una gema nueva o actualiza una existente según si hay una en edición.
+    // Deshabilita el botón mientras la petición está en curso para evitar doble envío.
+    // Después de guardar, limpia el formulario y recarga la lista.
+    async function guardarGema() {
+      try {
+        btnGuardar.disabled = true;
+        const diseño = obtenerDiseñoActual();
+        // Si hay una gema en edición se hace PUT a /api/gemas/:id,
+        // si no, se hace POST a /api/gemas para crear una nueva
+        let url = API_GEMAS;
+        let metodo = 'POST';
+        if (gemaEditandoId) {
+          url = `${API_GEMAS}/${gemaEditandoId}`;
+          metodo = 'PUT';
+        }
+        const respuesta = await fetch(url, {
+          method: metodo,
+          headers: obtenerHeaders(),
+          body: JSON.stringify(diseño) // convierte el objeto a texto JSON para enviarlo
+        });
+        await procesarRespuesta(respuesta);
+        mostrarMensaje(gemaEditandoId ? 'Gema actualizada' : 'Gema guardada');
+        reiniciarFormulario(false); // limpia el formulario pero conserva el mensaje de éxito
+        await cargarGemas();        // refresca la tabla con los datos actualizados
+      } catch (error) {
+        mostrarMensaje(error.message, true);
+      } finally {
+        // finally se ejecuta siempre, con éxito o error, para rehabilitar el botón
+        btnGuardar.disabled = false;
+      }
+    }
+    // Pide al servidor la lista completa de gemas y las muestra en la tabla.
+    // Detecta si la respuesta viene como array directo o envuelta en un objeto
+    // según cómo esté configurado el backend.
+    async function cargarGemas() {
+      try {
+        const respuesta = await fetch(API_GEMAS, {
+          method: 'GET',
+          headers: obtenerHeaders()
+        });
+        const datos = await procesarRespuesta(respuesta);
+        // Algunos backends devuelven { gemas: [...] } en vez de [...] directamente.
+        // Se revisa qué trae la respuesta para encontrar el array correcto.
+        console.log('Respuesta de /api/gemas:', datos);
+        const gemas = Array.isArray(datos) ? datos : (datos.gemas || datos.data || datos.result || []);
+        todasLasGemas = gemas;
+        filtrarYMostrar();
+      } catch (error) {
+        mostrarMensaje(error.message, true);
+      }
+    }
+
+  function filtrarYMostrar() {
+  const textoBusqueda = inputBuscar.value.trim().toLowerCase();
+  const tipoSeleccionado = selectTipo.value;
+  const orden = selectOrdenDureza.value;
+  let resultado = [...todasLasGemas];
+  if (textoBusqueda) {
+    resultado = resultado.filter(gema =>
+      (gema.Nombreinf ?? '').toLowerCase().includes(textoBusqueda)
+    );
+  }
+  if (tipoSeleccionado) {
+    resultado = resultado.filter(gema => gema.Tipoinf === tipoSeleccionado);
+  }
+  if (orden === 'asc') {
+    resultado.sort((a, b) => (parseFloat(a.durezainf) || 0) - (parseFloat(b.durezainf) || 0));
+  } else if (orden === 'desc') {
+    resultado.sort((a, b) => (parseFloat(b.durezainf) || 0) - (parseFloat(a.durezainf) || 0));
+  }
+  mostrarGemas(resultado);
+}
+
+    // Dibuja la lista de gemas en la tabla del HTML.
+    // Si no hay gemas, muestra el mensaje de "sin gemas" y oculta la tabla.
+    // Si hay gemas, oculta el mensaje y crea una fila por cada una.
+    function mostrarGemas(gemas) {
+      listaGemas.innerHTML = ''; // limpia las filas anteriores antes de redibujar
+      if (!gemas || gemas.length === 0) {
+        tablaGemas.classList.add('oculto');
+        sinGemas.classList.remove('oculto');
+        return;
+      }
+      tablaGemas.classList.remove('oculto');
+      sinGemas.classList.add('oculto');
+      gemas.forEach(gema => {
+        const fila = document.createElement('tr');
+        // Si hay imagen guardada se muestra como <img>, si no se muestra un texto alternativo
+        const celdaImagen = gema.Imginf
+          ? `<img src="${gema.Imginf}" alt="Gema" style="width:50px;height:50px;object-fit:cover;">`
+          : 'No disp.';
+        // ?? '-' muestra un guion si el campo llegó vacío o indefinido desde la base de datos
+        fila.innerHTML = `
+          <td>${celdaImagen}</td>
+          <td>${gema.Nombreinf ?? '-'}</td>
+          <td>${gema.Tipoinf ?? '-'}</td>
+          <td><span class="muestra-color" style="background-color: ${gema.Colorinf ?? 'transparent'}"></span></td>
+          <td>${gema.durezainf ?? '-'}</td>
+          <td>${gema.procedenciainf ?? '-'}</td>
+          <td>${gema.composicioninf ?? '-'}</td>
+          <td>${gema.brilloinf ?? '-'}</td>
+          <td>${gema.rarezainf ?? '-'}</td>
+          <td>$${gema.valorEstimadoinf ?? '-'}</td>
+          <td class="acciones">
+            <button class="btn-editar" onclick='editarGema(${JSON.stringify(gema)})'>Editar</button>
+            <button class="btn-eliminar" onclick="eliminarGema('${gema._id}')">Eliminar</button>
+          </td>
+        `;
+        listaGemas.appendChild(fila);
+      });
+    }
+    // Carga los datos de una gema en el formulario para poder modificarla.
+    // Guarda su _id en gemaEditandoId para que guardarGema sepa que debe hacer PUT.
+    // Sube la página al inicio para que el usuario vea el formulario con los datos cargados.
+    function editarGema(gema) {
+      gemaEditandoId = gema._id;
+      inputNombre.value = gema.Nombreinf ?? '';
+      inputTipo.value = gema.Tipoinf ?? '';
+      inputColor.value = gema.Colorinf ?? '';
+      inputDureza.value = gema.durezainf ?? '';
+      inputProcedencia.value = gema.procedenciainf ?? '';
+      inputComposicion.value = gema.composicioninf ?? '';
+      inputBrillo.value = gema.brilloinf ?? '';
+      inputRareza.value = gema.rarezainf ?? '';
+      inputValor.value = gema.valorEstimadoinf ?? '';
+      // Se conserva la imagen actual para no perderla si el usuario no elige una nueva
+      imagenBase64 = gema.Imginf || null;
+      btnGuardar.textContent = 'Actualizar gema';
+      btnCancelar.classList.remove('oculto');  // aparece el botón cancelar
+      modoEdicion.classList.remove('oculto');  // aparece el aviso de modo edición
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Elimina una gema de la base de datos tras pedir confirmación al usuario.
+    // Después de eliminar, recarga la tabla para reflejar el cambio.
+    async function eliminarGema(id) {
+      if (!confirm('¿Eliminar esta gema?')) return; // si el usuario cancela, no hace nada
+      try {
+        const respuesta = await fetch(`${API_GEMAS}/${id}`, {
+          method: 'DELETE',
+          headers: obtenerHeaders()
+        });
+        await procesarRespuesta(respuesta);
+        mostrarMensaje('Eliminada correctamente');
+        await cargarGemas();
+      } catch (error) {
+        mostrarMensaje(error.message, true);
+      }
+    }
+    // Deja el formulario en blanco y vuelve al modo creación.
+    // limpiarMsg controla si también se borra el mensaje de éxito o error:
+    // false cuando se acaba de guardar (para que el usuario vea la confirmación),
+    // true cuando el usuario pulsa Limpiar o Cancelar manualmente.
+    function reiniciarFormulario(limpiarMsg = true) {
+      gemaEditandoId = null;   // ya no hay ninguna gema en edición
+      imagenBase64 = null;     // se descarta la imagen que había en memoria
+      inputNombre.value = '';
+      inputTipo.value = '';
+      inputColor.value = '';
+      inputDureza.value = '';
+      inputProcedencia.value = '';
+      inputComposicion.value = '';
+      inputBrillo.value = '';
+      inputRareza.value = '';
+      inputValor.value = '';
+      inputImagen.value = '';
+      btnGuardar.textContent = 'Guardar diseño';
+      btnCancelar.classList.add('oculto');   // se oculta el botón cancelar
+      modoEdicion.classList.add('oculto');   // se oculta el aviso de modo edición
+      if (limpiarMsg) limpiarMensaje();
+    }
+    // Muestra un mensaje en el elemento #mensaje del HTML.
+    // Si esError es true aplica la clase de error (rojo), si no la de éxito (verde).
+    function mostrarMensaje(texto, esError = false) {
+      mensaje.textContent = texto;
+      mensaje.className = esError ? 'mensaje-error' : 'mensaje-correcto';
+    }
+    // Borra el texto y los estilos del mensaje para dejarlo invisible.
+    function limpiarMensaje() {
+      mensaje.textContent = '';
+      mensaje.className = '';
+    }
+</script>
+
+</body>
+
+</html>

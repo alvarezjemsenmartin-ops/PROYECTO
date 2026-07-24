@@ -1,0 +1,160 @@
+<html>
+
+<head>
+  <style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:
+        radial-gradient(circle at top,#304878 0%,#182848 35%,#0b1126 70%,#040814 100%);
+    color:#eefcff;
+}
+
+/*=========================
+        TITULOS
+=========================*/
+
+h1{
+    color:#7df9ff;
+    margin-bottom:35px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    text-shadow:
+        0 0 10px cyan,
+        0 0 20px #66ccff;
+}
+
+h2{
+    width:320px;
+    margin:12px 0 8px;
+    color:#dffbff;
+    font-size:17px;
+    font-weight:600;
+}
+
+/*=========================
+        INPUTS
+=========================*/
+
+input[type="text"],
+input[type="password"]{
+    width:320px;
+    padding:14px;
+    margin-bottom:18px;
+    border-radius:12px;
+    border:1px solid rgba(0,255,255,.3);
+    background:rgba(255,255,255,.08);
+    color:white;
+    font-size:15px;
+    transition:.3s;
+}
+
+input::placeholder{
+    color:#bdd6e8;
+}
+
+input:focus{
+    outline:none;
+    border-color:#7df9ff;
+    box-shadow:0 0 15px rgba(0,255,255,.55);
+}
+
+/*=========================
+        BOTÓN
+=========================*/
+
+#btn-guardar{
+    width:320px;
+    margin-top:10px;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    background:linear-gradient(135deg,#00d4ff,#0066ff);
+    transition:.35s;
+}
+
+#btn-guardar:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 20px rgba(0,255,255,.45);
+}
+
+/*=========================
+          LINK
+=========================*/
+
+a{
+    margin-top:22px;
+    color:#7df9ff;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+}
+
+a:hover{
+    color:white;
+    text-shadow:0 0 12px cyan;
+}
+  </style>
+</head>
+<body>
+
+<h1>Ingreso al sistema</h1>
+
+<h2>Escriba el email</h2>
+<input type="text" placeholder="Escriba el email" id = email>
+
+<h2>
+    Escriba la clave
+</h2>
+<input type="password" id = "clave">
+
+<input type="button" id ="btn-guardar" value="Guardar">
+<a href="registro.html" >ir al registro</a>
+<script>
+const btnGuardar = document.getElementById('btn-guardar');
+btnGuardar.addEventListener('click', async () => {
+  // Obtener colores actuales de cada parte
+  const usuario = {
+    email: document.getElementById('email').value,
+    clave: document.getElementById('clave').value,
+  
+  };
+  // Enviar via fetch al servidor
+  const resp = await fetch('/api/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(usuario)
+  });
+  const data = await resp.json();
+  console.log('Respuesta:', data);
+  if (data.error != undefined)
+  {
+    alert(data.error)
+  }
+  else
+  {
+    alert("Bienvenido")
+  localStorage.setItem("token", data.token)
+  location.href="index.html"
+  }
+ 
+});
+</script>
+</body>
+</html>
