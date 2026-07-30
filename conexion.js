@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const uri = 'mongodb://localhost:27017'; 
+const uri = process.env.MONGO; 
 
 async function conectarBD() {
 try {

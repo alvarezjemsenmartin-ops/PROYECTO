@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const gemaSchema = new mongoose.Schema({
-  Imginf:          { type: String },
-  Nombreinf:       { type: String, required: true },
-  Tipoinf:         { type: String },
-  Colorinf:        { type: String },
-  durezainf:       { type: String },
-  procedenciainf:  { type: String },
-  composicioninf:  { type: String },
-  brilloinf:       { type: String },
-  rarezainf:       { type: String },
-  valorEstimadoinf:{ type: String }
+  imagenUrl:          { type: String },
+  nombre:       { type: String, required: true },
+  tipo:         { type: String },
+  color:        { type: String },
+  durezaMohs:       { type: String },
+  procedencia:  { type: String },
+  composicion:  { type: String },
+  brillo:       { type: String },
+  rareza:       { type: String },
+  valorEstimado:{ type: String }
 });
 module.exports = mongoose.model('Gema', gemaSchema);

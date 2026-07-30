@@ -1,5 +1,5 @@
+const dotenv = require('dotenv');
 const express = require('express');
-
 const Usuario = require('./esquemaUsuario.js');
 const Gema = require('./Gemaesquema.js');
 const app = express();
@@ -7,6 +7,8 @@ app.use(express.json());
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 const conectarBD = require('./conexion.js');
+
+dotenv.config();
 async function iniciarServidor() {
   await conectarBD();
 }
@@ -23,7 +25,7 @@ function verificarToken(req, res, next) {
   const token = authHeader.split(' ')[1];  // Espera formato "Bearer token"
   console.log(token)
   try {
-    const decoded = jwt.verify(token, 'SECRETO_SUPER_SEGUR0');    // Verifica y decodifica el token
+    const decoded = jwt.verify(token, process.env.SECRETO);    // Verifica y decodifica el token
     console.log(decoded)
     req.usuarioId = decoded.id;                    // Guardamos el id del token en la request para usarlo después
     next();                                       // Token válido, continuar a la siguiente función
@@ -101,17 +103,7 @@ app.post('/api/usuarios', async (req, res) => {
     res.status(400).json({ error: 'Error al crear usuario' }); // Posibles errores de validación
   }
 });
-// Crear un nuevo usuario
-app.post('/api/gemas', async (req, res) => {
-  try {
-    const datosGema = req.body;            // Obtenemos los datos enviados en la petición
-    const nuevo = new Gema(datosGema);  // Creamos un nuevo documento Gema
-    const gemaGuardado = await nuevo.save();      // Guardamos en la base de datos
-    res.status(201).json(gemaGuardado);    // Devolvemos la gema creada con código 201 (Creado)
-  } catch (error) {
-    res.status(400).json({ error: 'Error al crear la gema' }); // Posibles errores de validación
-  }
-});
+
 // Actualizar un usuario existente
 app.put('/api/usuarios/:id', async (req, res) => {
   try {
@@ -186,7 +178,7 @@ app.post('/api/login', async (req, res) => {
     
     // 3. Credenciales válidas: Generar token JWT
     const datosToken = { id: usuario._id };            // Podemos incluir datos en el token (p.ej. el ID de usuario)
-    const secreto = 'SECRETO_SUPER_SEGUR0';            // Clave secreta para firmar el token (en producción, mantener en una variable de entorno)
+    const secreto = process.env.SECRETO;            // Clave secreta para firmar el token (en producción, mantener en una variable de entorno)
     const opciones = { expiresIn: '1h' };              // El token expirará en 1 hora
     const token = jwt.sign(datosToken, secreto, opciones);
     
@@ -228,7 +220,6 @@ app.get('/api/gemas/:id', verificarToken, async (req, res) => {
   try {
     const gema = await Gema.findOne({
       _id: req.params.id,
-      creador: req.usuarioId
     });
 
     if (!gema) {
@@ -279,6 +270,7 @@ app.post('/api/gemas', verificarToken, async (req, res) => {
       imagenUrl
     });
 
+
     const gemaGuardada = await nuevaGema.save();
 
     res.status(201).json(gemaGuardada);
@@ -310,10 +302,17 @@ app.put('/api/gemas/:id', verificarToken, async (req, res) => {
       imagenUrl
     } = req.body;
 
+    console.log("ID recibido:", req.params.id);
+    console.log("Usuario del token:", req.usuarioId);
+
+    const prueba = await Gema.findById(req.params.id);
+
+    console.log("Gema encontrada directamente:", prueba);
+
     const gemaActualizada = await Gema.findOneAndUpdate(
-      {
+    {
         _id: req.params.id
-      },
+    },
       {
         nombre,
         tipo,
@@ -350,11 +349,14 @@ app.put('/api/gemas/:id', verificarToken, async (req, res) => {
 });
 
 
+
 // Eliminar una gema del usuario autenticado
 app.delete('/api/gemas/:id', verificarToken, async (req, res) => {
   try {
+    console.log("ID recibido para borrar:", req.params.id);
+    console.log("Usuario del token:", req.usuarioId);
     const gemaEliminada = await Gema.findOneAndDelete({
-      _id: req.params.id
+    _id: req.params.id,
     });
 
     if (!gemaEliminada) {
